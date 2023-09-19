@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5719396046059759134}
   - component: {fileID: 3953935195632731799}
   - component: {fileID: 4691697347657765513}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f07b8d6fd60250c4c88073c0426cc496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerLayer: 6
+  _playerLayer: 3
   _itemSound: {fileID: -2494355186064245806}
 --- !u!1 &8285209686681373919
 GameObject:
