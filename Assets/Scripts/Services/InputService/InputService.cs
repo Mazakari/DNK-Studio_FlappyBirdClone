@@ -5,7 +5,6 @@
     public InputService()
     {
         InputActions = new InputActions();
-        InputActions.Platform.Enable();
-        InputActions.Ball.Enable();
+        InputActions.Player.Enable();
     }
 }

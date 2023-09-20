@@ -8,6 +8,7 @@ public class LoadLevelState : IPayloadedState<string>
     private readonly IGameFactory _gameFactory;
     private readonly IPersistentProgressService _progressService;
     private readonly ILevelProgressService _levelProgressService;
+    private readonly IGameSettingsService _gameSettingsService;
 
     public LoadLevelState(
         GameStateMachine gameStateMachine, 
@@ -15,7 +16,8 @@ public class LoadLevelState : IPayloadedState<string>
         LoadingCurtain curtain, 
         IGameFactory gameFactory, 
         IPersistentProgressService progressService, 
-        ILevelProgressService levelProgressService)
+        ILevelProgressService levelProgressService,
+        IGameSettingsService gameSettingsService)
     {
         _gameStateMachine = gameStateMachine;
         _sceneLoader = sceneLoader;
@@ -23,6 +25,7 @@ public class LoadLevelState : IPayloadedState<string>
         _gameFactory = gameFactory;
         _progressService = progressService;
         _levelProgressService = levelProgressService;
+        _gameSettingsService = gameSettingsService;
     }
 
     public void Enter(string sceneName)
@@ -50,12 +53,39 @@ public class LoadLevelState : IPayloadedState<string>
         GameObject spawnPos = GameObject.FindGameObjectWithTag(Constants.PLAYER_SPAWN_POINT_TAG);
         GameObject player = SpawnPlayer(spawnPos);
 
+        SetPlayerDifficultySpeed(player);
+        SetPlayerFollowers(player);
+
         _gameFactory.CreateLevelHud();
     }
 
+   
+
     private GameObject SpawnPlayer(GameObject spawnPos) =>
        _gameFactory.CreatePlayer(spawnPos);
-   
+
+    private void SetPlayerDifficultySpeed(GameObject player)
+    {
+        if (player.TryGetComponent(out PlayerMove move))
+        {
+            float difficultySpeed = _gameSettingsService.CurrentLevelSettings.playerSpeed;
+            move.SetSpeed(difficultySpeed);
+            Debug.Log($"{_gameSettingsService.CurrentLevelSettings.difficulty} difficulty player speed is {difficultySpeed}");
+        }
+    }
+
+    private void SetPlayerFollowers(GameObject player)
+    {
+        FollowTarget[] followers = Object.FindObjectsOfType<FollowTarget>();
+        if (followers != null || followers.Length > 0)
+        {
+            foreach (var follower in followers)
+            {
+                follower.SetTarget(player.transform);
+            }
+
+        }
+    }
 
     private void ResetTotalLevelScores() =>
        _levelProgressService.ResetScores();

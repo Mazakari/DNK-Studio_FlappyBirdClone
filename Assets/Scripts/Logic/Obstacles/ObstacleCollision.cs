@@ -5,28 +5,15 @@ public class ObstacleCollision : MonoBehaviour
 {
     [SerializeField] private int _playerLayer;
 
-    [Space(10)]
-    [Header("Audio")]
-    [SerializeField] private ItemSound _itemSound;
+    public static event Action OnObstacleCollision;
 
-    public static event Action OnEnemyCollision;
-
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collider.gameObject.layer == _playerLayer)
+        if (collision.gameObject.layer == _playerLayer)
         {
-            PlayItemSound();
-
             // Send callback for GameplayState
-            OnEnemyCollision?.Invoke();
-        }
-    }
-
-    private void PlayItemSound()
-    {
-        if (_itemSound)
-        {
-            _itemSound.Play();
+            Debug.Log("Wall collision");
+            OnObstacleCollision?.Invoke();
         }
     }
 }

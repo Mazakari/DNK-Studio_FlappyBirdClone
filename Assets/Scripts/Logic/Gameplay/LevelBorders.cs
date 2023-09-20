@@ -2,61 +2,46 @@ using UnityEngine;
 
 public class LevelBorders : MonoBehaviour
 {
-    [Header("Camera")]
-    [SerializeField] private Camera _camera;
-    private float _camHeight;
-    private float _camWidth;
-
-    [Space(10)]
-    [Header("Borders")]
     [SerializeField] private Transform _topBorder;
-    [SerializeField] private Transform _leftBorder;
-    [SerializeField] private Transform _rightBorder;
+    [SerializeField] private Transform _bottomBorder;
 
-    private void OnEnable() => 
+    private Camera _camera;
+    private float _camHeight;
+
+    private void OnEnable()
+    {
+        CacheCamera();
         SetBorders();
+    }
 
+    private void CacheCamera() => 
+        _camera = Camera.main;
     private void SetBorders()
     {
-        GetCameraSize();
+        GetCameraHeight();
         CalculateAndSetBordersPositions();
     }
 
+    private void GetCameraHeight() => 
+        _camHeight = 2f * _camera.orthographicSize;
+
     private void CalculateAndSetBordersPositions()
     {
-        CalculateTopBorder();
-
-        float xOffset = _camWidth / 2f;
-        CalculateAndSetLeftBorder(xOffset);
-        CalculateAndSetRightBorder(xOffset);
+        SetTopBorder();
+        SetBottomBorder();
     }
-    private void CalculateAndSetLeftBorder(float xOffset)
-    {
-        Vector2 borderPosition = Vector2.zero;
-        borderPosition.x -= xOffset;
-        _leftBorder.position = borderPosition;
-    }
-
-    private void CalculateAndSetRightBorder(float xOffset)
-    {
-        Vector2 borderPosition = Vector2.zero;
-
-        borderPosition = Vector2.zero;
-        borderPosition.x += xOffset;
-        _rightBorder.position = borderPosition;
-    }
-
-    private void CalculateTopBorder()
+    private void SetTopBorder()
     {
         Vector2 borderPosition = Vector2.zero;
 
         borderPosition.y += _camHeight / 2f;
         _topBorder.position = borderPosition;
     }
-
-    private void GetCameraSize()
+    private void SetBottomBorder()
     {
-        _camHeight = 2f * _camera.orthographicSize;
-        _camWidth = _camHeight * _camera.aspect;
+        Vector2 borderPosition = Vector2.zero;
+
+        borderPosition.y -= _camHeight / 2f;
+        _bottomBorder.position = borderPosition;
     }
 }

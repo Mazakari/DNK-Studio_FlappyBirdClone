@@ -11,10 +11,31 @@ public class GameStateMachine
         _states = new Dictionary<Type, IExitableState>
         {
             [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
-            [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, curtain, services.Single<IGameFactory>(), services.Single<IPersistentProgressService>(), services.Single<ILevelProgressService>()),
-            [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>(), services.Single<IGameSettingsService>()),
-            [typeof(LoadMainMenuState)] = new LoadMainMenuState(this, sceneLoader, curtain, services.Single<IGameFactory>(), services.Single<IPersistentProgressService>()),
+
+            [typeof(LoadLevelState)] = new LoadLevelState(
+                this, 
+                sceneLoader, 
+                curtain, 
+                services.Single<IGameFactory>(), 
+                services.Single<IPersistentProgressService>(), 
+                services.Single<ILevelProgressService>(), 
+                services.Single<IGameSettingsService>()),
+
+            [typeof(LoadProgressState)] = new LoadProgressState(
+                this, 
+                services.Single<IPersistentProgressService>(), 
+                services.Single<ISaveLoadService>(), 
+                services.Single<IGameSettingsService>()),
+
+            [typeof(LoadMainMenuState)] = new LoadMainMenuState(
+                this, 
+                sceneLoader, 
+                curtain, 
+                services.Single<IGameFactory>(), 
+                services.Single<IPersistentProgressService>()),
+
             [typeof(GameLoopState)] = new GameLoopState(this, sceneLoader),
+
             [typeof(MainMenuState)] = new MainMenuState(this, services.Single<ISaveLoadService>()),
         };
 

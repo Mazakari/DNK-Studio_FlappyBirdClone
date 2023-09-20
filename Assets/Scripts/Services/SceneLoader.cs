@@ -38,13 +38,8 @@ public class SceneLoader
         onLoaded?.Invoke();
     }
 
-    public string GetCurrentLevelName()
-    {
-        int firstLevelIndex = GetFirstLevelIndex();
-        int curLevelIndex = SceneManager.GetActiveScene().buildIndex;
-        int curLevellevelBuildIndex = (curLevelIndex - firstLevelIndex) + 1;
-        return _buildIndexScenesNames[curLevellevelBuildIndex];
-    }
+    public string GetCurrentLevelName() =>
+        SceneManager.GetActiveScene().name;
 
     public void GetBuildNamesFromBuildSettings()
     {
@@ -58,18 +53,5 @@ public class SceneLoader
             sceneName = System.IO.Path.GetFileNameWithoutExtension(pathToScene);
             _buildIndexScenesNames.Add(sceneName);
         }
-    }
-
-    private int GetFirstLevelIndex()
-    {
-        for (int i = 0; i < _buildIndexScenesNames.Count; i++)
-        {
-            if (_buildIndexScenesNames[i].Equals(Constants.FIRST_LEVEL_NAME))
-            {
-                return i;
-            }
-        }
-
-        return -1;
     }
 }

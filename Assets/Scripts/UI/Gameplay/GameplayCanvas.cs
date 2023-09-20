@@ -7,7 +7,6 @@ public class GameplayCanvas : MonoBehaviour
     [SerializeField] private GameObject _LevelLosePopup;
 
     [SerializeField] private Button _mainMenuButton;
-    //[SerializeField] private CurrentLevelDisplay _levelDisplay;
 
     private ITimeService _timeService;
 
@@ -17,15 +16,17 @@ public class GameplayCanvas : MonoBehaviour
     private void OnEnable()
     {
         _timeService = AllServices.Container.Single<ITimeService>();
+
         DeathTrigger.OnGameOver += ShowLevelLosePopup;
+        ObstacleCollision.OnObstacleCollision += ShowLevelLosePopup;
 
         InitPopups();
-        UpdateLevelDifficulty();
     }
 
     private void OnDisable()
     {
         DeathTrigger.OnGameOver -= ShowLevelLosePopup;
+        ObstacleCollision.OnObstacleCollision -= ShowLevelLosePopup;
 
         _mainMenuButton.onClick.RemoveAllListeners();
         _timeService.ResumeGame();
@@ -42,9 +43,4 @@ public class GameplayCanvas : MonoBehaviour
     // Send callback for GameLoopState
     public void LoadMainMenu() => 
         OnMainMenuButton?.Invoke();
-
-    private void UpdateLevelDifficulty()
-    {
-        // TO DO 
-    }
 }

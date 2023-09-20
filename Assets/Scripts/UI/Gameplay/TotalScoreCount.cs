@@ -4,6 +4,7 @@ using UnityEngine;
 public class TotalScoreCount : MonoBehaviour
 {
     [SerializeField] private TMP_Text _totalScoreText;
+    public int TotalScores => _totalScores;
     private int _totalScores = 0;
 
     private void OnEnable()
@@ -13,10 +14,8 @@ public class TotalScoreCount : MonoBehaviour
         InitCounter();
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() => 
         ScoreTrigger.OnScoreChange -= UpdateScoreCounter;
-    }
 
     private void InitCounter()
     {

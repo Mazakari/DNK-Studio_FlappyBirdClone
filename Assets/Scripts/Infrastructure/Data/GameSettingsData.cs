@@ -1,12 +1,11 @@
 using System;
-using UnityEngine;
 
 [Serializable]
 public struct LevelSettings
 {
     public LevelDifficulty difficulty;
     public float playerSpeed;
-    public GameObject wallsPrefab;
+    public string levelSceneName;
 }
 
 [Serializable]
@@ -23,10 +22,6 @@ public class GameSettingsData
     public GameSettingsData(LevelSettings defaultLevelSettings)
 	{
         levelSettings = defaultLevelSettings;
-
-        Debug.Log(levelSettings.difficulty);
-        Debug.Log(levelSettings.playerSpeed);
-        Debug.Log(levelSettings.wallsPrefab.name);
 
         musicVolume = 0.5f;
         musicToggle = true;

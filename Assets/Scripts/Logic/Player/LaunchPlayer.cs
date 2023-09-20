@@ -1,82 +1,76 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(PlayerMove))]
 public class LaunchPlayer : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D _rb;
-    public Rigidbody2D Rigidbody => _rb;
-
+    private Rigidbody2D _rigidbody;
+    private PlayerMove _playerMove;
     [SerializeField] private  float _force = 10f;
-    public float Force => _force;
 
     private bool _isActive = false;
-    private Vector2 _startDirection = Vector2.zero;
+    private Vector2 _direction = Vector2.up;
 
     private IInputService _inputService;
 
     private void OnEnable()
     {
+        GetComponentsRefenences();
+
         _inputService = AllServices.Container.Single<IInputService>();
-        InitRigidbodyAndStartDirection();
 
-        _inputService.InputActions.Ball.LaunchBall.started += LaunchBall;
+        _inputService.InputActions.Player.Launch.started += PushPlayerUp;
+
+        InitRigidbody();
     }
 
-    private void OnDisable()
+    private void OnDisable() => 
+        _inputService.InputActions.Player.Launch.started -= PushPlayerUp;
+
+    private void GetComponentsRefenences()
     {
-        _inputService.InputActions.Ball.LaunchBall.started -= LaunchBall;
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _playerMove = GetComponent<PlayerMove>();
     }
 
-    void Update()
-    {
-        if (_isActive == true)
-        {
-            return;
-        }
-    }
-
-    public void AddPlayerLaunchForce(Vector2 direction) =>
-        _rb.AddForce(direction, ForceMode2D.Impulse);
-
-    public void InitRigidbodyAndStartDirection()
-    {
-        _isActive = false;
-        _rb.velocity = Vector2.zero;
-        SetStartLaunchDirection();
-        SetRigidbodyToKinematic();
-    }
-
-    private void SetStartLaunchDirection() =>
-        _startDirection = new Vector2(0, 1 * _force);
-
-    private void SetRigidbodyToKinematic()
-    {
-        _rb.isKinematic = true;
-        _isActive = false;
-    }
-
-   
-    private void Launch()
-    {
-        SetRigidbodyToDynamic();
-        AddPlayerLaunchForce(_startDirection);
-
-        _isActive = true;
-    }
-
-    private void SetRigidbodyToDynamic() => 
-        _rb.isKinematic = false;
-
-    private void LaunchBall(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void PushPlayerUp(InputAction.CallbackContext context)
     {
         if (EventSystem.current.IsPointerOverGameObject())
         {
             return;
         }
 
+        Launch();
+    }
+    private void Launch()
+    {
         if (_isActive == false)
         {
-            Launch();
+            SetRigidbodyToDynamic();
+            EnablePlayerMovement();
+            _isActive = true;
         }
+
+        AddPlayerLaunchForce(_direction);
     }
+
+    private void SetRigidbodyToDynamic() =>
+       _rigidbody.isKinematic = false;
+    private void EnablePlayerMovement() =>
+        _playerMove.EnabeMovement();
+
+    private void InitRigidbody()
+    {
+        _isActive = false;
+        _rigidbody.velocity = Vector2.zero;
+        SetRigidbodyToKinematic();
+    }
+
+    private void SetRigidbodyToKinematic() => 
+        _rigidbody.isKinematic = true;
+
+    private void AddPlayerLaunchForce(Vector2 direction) =>
+        _rigidbody.AddForce(direction * _force, ForceMode2D.Impulse);
 }

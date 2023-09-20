@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
     difficulty: 2
-    playerSpeed: 3
-    wallsPrefab: {fileID: 6791526264046010278, guid: 83262b6573812b14db19458125f4ca53, type: 3}
+    playerSpeed: 700
+    levelSceneName: Level1_Hard

@@ -31,8 +31,11 @@ public class MainMenuCanvas : MonoBehaviour, ISavedProgress
 
     public void QuitGame() => 
         Application.Quit();
-    private void StartGame() =>
-       OnStartGameButtonPress?.Invoke(Constants.FIRST_LEVEL_NAME);
+    private void StartGame()
+    {
+        string difficultySceneName = _settingsService.CurrentLevelSettings.levelSceneName;
+        OnStartGameButtonPress?.Invoke(difficultySceneName);
+    }
 
     private void HideSettingsPopup() =>
         _settingsPopup.SetActive(false);

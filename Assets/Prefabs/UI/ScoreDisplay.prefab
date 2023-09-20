@@ -61,7 +61,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -881802591
+  m_SortingLayerID: 960750739
   m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &716427818462913711
@@ -284,7 +284,7 @@ Transform:
   m_Children:
   - {fileID: 6728180720272855578}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1528243098500911092
 MonoBehaviour:
